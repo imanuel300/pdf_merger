@@ -7,7 +7,9 @@ setup(
     install_requires=[
         'PyMuPDF',
         'docx2pdf',
-        'PyPDF2'
+        'PyPDF2',
+        'Pillow',
+        'pywin32'
     ],
     author='imanuel300',
     author_email='your.email@example.com',

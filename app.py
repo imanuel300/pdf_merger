@@ -6,6 +6,9 @@ from PyPDF2 import PdfMerger
 import tempfile
 import shutil
 from datetime import datetime
+from PIL import Image  # להמרת תמונות
+import win32com.client  # להמרת DOC
+import pythoncom
 
 class PDFMergerTool:
     def __init__(self, config_path='config.json'):
@@ -14,6 +17,35 @@ class PDFMergerTool:
         
         # יצירת תיקיית temp אם לא קיימת
         os.makedirs(self.config['temp_folder'], exist_ok=True)
+
+    def convert_image_to_pdf(self, image_path, output_path):
+        """המרת קובץ תמונה ל-PDF"""
+        try:
+            image = Image.open(image_path)
+            # המרה ל-RGB אם התמונה בפורמט RGBA
+            if image.mode == 'RGBA':
+                image = image.convert('RGB')
+            image.save(output_path, 'PDF')
+            return True
+        except Exception as e:
+            print(f"שגיאה בהמרת תמונה {image_path}: {str(e)}")
+            return False
+
+    def convert_doc_to_pdf(self, doc_path, output_path):
+        """המרת קובץ DOC ל-PDF"""
+        try:
+            pythoncom.CoInitialize()
+            word = win32com.client.Dispatch('Word.Application')
+            doc = word.Documents.Open(doc_path)
+            doc.SaveAs(output_path, FileFormat=17)  # 17 = PDF format
+            doc.Close()
+            word.Quit()
+            return True
+        except Exception as e:
+            print(f"שגיאה בהמרת DOC {doc_path}: {str(e)}")
+            return False
+        finally:
+            pythoncom.CoUninitialize()
 
     def add_footer(self, input_path, output_path, original_filename, total_pages):
         doc = fitz.open(input_path)
@@ -40,13 +72,22 @@ class PDFMergerTool:
     def process_files(self):
         merger = PdfMerger()
         
-        # המרת DOCX ל-PDF
+        # המרת קבצים ל-PDF
         for filename in os.listdir(self.config['input_folder']):
-            if filename.endswith('.docx'):
-                docx_path = os.path.join(self.config['input_folder'], filename)
-                pdf_path = os.path.join(self.config['temp_folder'], 
-                                      filename.replace('.docx', '_temp.pdf'))
-                convert(docx_path, pdf_path)
+            input_path = os.path.join(self.config['input_folder'], filename)
+            base_name = os.path.splitext(filename)[0]
+            
+            # הגדרת נתיב הפלט
+            pdf_path = os.path.join(self.config['temp_folder'], f"{base_name}_temp.pdf")
+            
+            # המרה בהתאם לסוג הקובץ
+            if filename.lower().endswith(('.docx', '.doc')):
+                if filename.lower().endswith('.docx'):
+                    convert(input_path, pdf_path)
+                else:  # .doc
+                    self.convert_doc_to_pdf(input_path, pdf_path)
+            elif filename.lower().endswith(('.jpg', '.jpeg', '.png', '.bmp', '.gif')):
+                self.convert_image_to_pdf(input_path, pdf_path)
         
         # עיבוד כל קובצי ה-PDF והוספת footer
         processed_files = []
