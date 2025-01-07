@@ -17,18 +17,50 @@
 
 ## התקנה
 
-1. שכפל את המאגר:
+### אפשרות 1: התקנה מהמקור
 
-    git clone https://github.com/your-username/pdf-merger.git
-    cd pdf-merger
+1. התקן Python 3.7 ומעלה מהאתר הרשמי:
+    
+    https://www.python.org/downloads/
 
-2. התקן את הספריות הנדרשות:
+2. הורד את הפרויקט:
+
+    git clone https://github.com/imanuel300/pdf_merger.git
+    cd pdf_merger
+
+3. צור סביבה וירטואלית (מומלץ):
+
+    python -m venv venv
+    # הפעלת הסביבה הוירטואלית
+    # ב-Windows:
+    venv\Scripts\activate
+    # ב-Linux/Mac:
+    source venv/bin/activate
+
+4. התקן את הספריות הנדרשות:
 
     pip install -r requirements.txt
 
-3. התקן את הכלי:
+5. התקן את הכלי:
 
     pip install .
+
+### אפשרות 2: התקנת קובץ הרצה עצמאי
+
+1. הורד את קובץ ההרצה האחרון מעמוד ה-Releases:
+    
+    https://github.com/imanuel300/pdf_merger/releases
+
+2. הרץ את הקובץ `pdf_merger.exe`
+
+3. בפעם הראשונה, צור קובץ `config.json` באותה תיקייה עם ההגדרות הבאות:
+
+    {
+        "input_folder": "C:\\Your\\Input\\Folder",
+        "output_file": "C:\\Your\\Output\\Folder\\merged_output.pdf",
+        "footer_text": "מסמך מאוחד",
+        "temp_folder": "C:\\Your\\Temp\\Folder"
+    }
 
 ## הגדרות
 

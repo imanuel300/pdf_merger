@@ -1,6 +1,6 @@
 {
-    "input_folder": "C:\\Your\\Folder\\Path",
-    "output_file": "C:\\Your\\Folder\\Path\\merged_output.pdf",
+    "input_folder": "C:\\PDFS",
+    "output_file": "C:\\PDFS\\merged_output.pdf",
     "footer_text": "מסמך מאוחד",
-    "temp_folder": "C:\\Your\\Folder\\Path\\temp"
+    "temp_folder": "C:\\PDFS\\temp"
 }

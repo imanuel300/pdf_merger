@@ -23,11 +23,16 @@ class PDFMergerTool:
             
             # חישוב מיקום ה-footer
             rect = page.rect
-            text_position = fitz.Point(rect.width/2, rect.height - 20)
+            # חישוב מיקום אמצע העמוד
+            x = rect.width/2
+            y = rect.height - 20
             
-            # הוספת הטקסט
-            page.insert_text(text_position, footer_text, 
-                           fontsize=10, align=fitz.TEXT_ALIGN_CENTER)
+            # הוספת הטקסט - הסרנו את הפרמטר align שגרם לשגיאה
+            page.insert_text(
+                point=fitz.Point(x, y),  # שימוש ב-Point במקום שני פרמטרים נפרדים
+                text=footer_text,
+                fontsize=10
+            )
         
         doc.save(output_path)
         doc.close()
