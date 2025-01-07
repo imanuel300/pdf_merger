@@ -1,0 +1,6 @@
+{
+    "input_folder": "C:\\Your\\Folder\\Path",
+    "output_file": "C:\\Your\\Folder\\Path\\merged_output.pdf",
+    "footer_text": "מסמך מאוחד",
+    "temp_folder": "C:\\Your\\Folder\\Path\\temp"
+}
